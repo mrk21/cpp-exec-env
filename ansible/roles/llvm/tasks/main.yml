@@ -1,0 +1,51 @@
+---
+- name: add apt key
+  when: ansible_os_family == "Debian"
+  apt_key: url=http://llvm.org/apt/llvm-snapshot.gpg.key state=present
+  
+- name: add apt repository
+  when: ansible_os_family == "Debian"
+  apt_repository: repo="deb http://llvm.org/apt/precise llvm-toolchain-precise main" state=present
+  
+- name: install LLVM 3.7
+  when: ansible_os_family == "Debian"
+  apt: update_cache=yes name=clang-3.7 state=present
+  
+- name: set default compiler
+  when: ansible_os_family == "Debian"
+  shell: |
+    creates=/usr/bin/clang
+    update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-3.7   37
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.7 37
+  
+- name: install CMake 3.1.0
+  shell: |
+    creates=/usr/bin/cmake
+    cd
+    wget http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz
+    tar xvf cmake-3.1.0.tar.gz
+    cd cmake-3.1.0
+    ./bootstrap --prefix=/usr
+    make
+    make install
+    cd
+    rm -rf cmake-3.1.0*
+  
+- name: install libc++
+  shell: |
+    creates=/usr/lib/libc++.so.1
+    cd
+    svn co http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
+    cd libcxx
+    mkdir build
+    cd build
+    CC=clang CXX=clang++ cmake \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLIBCXX_CXX_ABI=libstdc++ \
+      -DLIBCXX_LIBSUPCXX_INCLUDE_PATHS="/usr/include/c++/4.9;/usr/include/x86_64-linux-gnu/c++/4.9" \
+    ..
+    make
+    make install
+    cd
+    rm -rf libcxx

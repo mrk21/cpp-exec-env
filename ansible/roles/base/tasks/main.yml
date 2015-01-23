@@ -1,0 +1,14 @@
+---
+- name: install basic packages
+  when: ansible_os_family == "Debian"
+  apt: update_cache=yes name="{{ item }}" state=present
+  with_items:
+    - python-software-properties
+    - vim
+    - wget
+    - tree
+    - git
+    - subversion
+    - make
+    - autoconf
+    - libssl-dev

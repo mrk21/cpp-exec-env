@@ -1,0 +1,14 @@
+---
+- hosts: all
+  roles:
+    - role: base
+      tags: base
+      
+    - role: gcc
+      tags: gcc
+      
+    - role: llvm
+      tags: llvm
+      
+    - role: boost
+      tags: boost
