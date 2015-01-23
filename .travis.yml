@@ -1,0 +1,6 @@
+---
+language: cpp
+sudo: false
+script:
+  ./ansible/install_ansible.sh
+  ansible-playbook -vvvv -c local -i ansible/inventory.ini ansible/site.yml
