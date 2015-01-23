@@ -1,5 +1,5 @@
 ---
 language: cpp
 script:
-  - sudo ./ansible/install_ansible.sh
-  - sudo ansible-playbook -vvvv -c local -i ansible/inventory.ini ansible/site.yml
+  - travis_wait 'sudo ./ansible/install_ansible.sh'
+  - travis_wait 'sudo ansible-playbook -v -c local -i ansible/inventory.ini ansible/site.yml'
