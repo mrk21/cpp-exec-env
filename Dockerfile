@@ -4,4 +4,4 @@ MAINTAINER Yuichi Murata <mrk21info+docker@gmail.com>
 ADD ansible /var/lib/ansible
 WORKDIR /var/lib/ansible
 RUN ./install_ansible.sh
-RUN ansible-playbook -v -c local -i inventory.ini site.yml
+RUN ansible-playbook -vvvv -c local -i inventory.ini site.yml
