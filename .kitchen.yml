@@ -1,0 +1,23 @@
+---
+driver:
+  name: docker
+  socket: <%= ENV.fetch('DOCKER_HOST', 'unix:///var/run/docker.sock') %>
+
+provisioner:
+  name: ansible_playbook
+  roles_path: ansible/roles
+  playbook: ansible/site.yml
+  hosts: all
+  require_ansible_repo: true
+  ansible_verbose: true
+  ansible_verbosity: 2
+
+platforms:
+  - name: ubuntu-12.04
+    driver_config:
+      platform: ubuntu
+      image: ubuntu:12.04
+      instance_name: test_cpp-exec-env
+
+suites:
+  - name: default
