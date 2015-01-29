@@ -17,7 +17,7 @@ platforms:
     driver_config:
       platform: ubuntu
       image: ubuntu:12.04
-      instance_name: test_cpp-exec-env
+      instance_name: cpp-exec-env
 
 suites:
   - name: default
